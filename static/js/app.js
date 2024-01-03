@@ -7,11 +7,12 @@ function demoInfo(inputId){
         let summary = data.metadata;
 
         for (i = 0; i < summary.length; i++){
+
             let id = summary[i].id.toString();
             if (id === inputId){
                 console.log(summary[i]);
 
-                d3.select("#sample-metadata").append("tr").text(`Id: ${summary[i].id}`);
+                d3.select("#sample-metadata").text(`Id: ${summary[i].id}`);
                 d3.select("#sample-metadata").append("tr").text(`Ethnicity: ${summary[i].ethnicity}`);
                 d3.select("#sample-metadata").append("tr").text(`Gender: ${summary[i].gender}`);
                 d3.select("#sample-metadata").append("tr").text(`Age: ${summary[i].age}`);
@@ -95,21 +96,22 @@ function Plots(inputId){
         });
 };
 
+function optionChanged(val){
+    Plots(val);
+    demoInfo(val);
+    
+};
+
 function init(){
     let dropDownMenu = d3.select("#selDataset");
-
     d3.json(url).then(function(data){
         let ids = data.names;
-
-        dropDownMenu.property(ids)
-
-        console.log("These are the ids", ids);
+        Object.values(ids).forEach(value => {
+            dropDownMenu.append('option').text(value);
+        })
     });
-
-
-    demoInfo("940");
     Plots("940");
-
+    demoInfo("940")
 };
 
 init();
